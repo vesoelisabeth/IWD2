@@ -1,15 +1,15 @@
 ########################################
 # Program: patmatmotifs
-# Rundate: Sun 30 Mar 2025 23:28:46
+# Rundate: Sun 30 Mar 2025 23:23:09
 # Commandline: patmatmotifs
-#    -sequence /home/s2015320/public_html/project2/temp_seq_67e9c59eb6d36.fasta
+#    -sequence test.fasta
 #    -full
 #    -noprune
 #    -sformat fasta
 #    -rformat simple
-#    -outfile /home/s2015320/public_html/project2/motif_scan.out
+#    -outfile test.out
 # Report_format: simple
-# Report_file: /home/s2015320/public_html/project2/motif_scan.out
+# Report_file: test.out
 ########################################
 
 #=======================================
