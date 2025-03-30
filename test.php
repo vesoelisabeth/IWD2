@@ -1,0 +1,1 @@
+<?php exec("/home/s2015320/public_html/project2/myenv/bin/python3 /home/s2015320/public_html/project2/clustal_analyze.py < /home/s2015320/public_html/project2/temp.json 2>&1", $out, $ret); print_r($out); echo "Return: $ret"; ?>

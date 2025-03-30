@@ -1,0 +1,35 @@
+########################################
+# Program: patmatmotifs
+# Rundate: Sun 30 Mar 2025 16:31:35
+# Commandline: patmatmotifs
+#    -sequence /tmp/seq_CqyIJI.fasta
+#    -prune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/motif_scan.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/motif_scan.out
+########################################
+
+#=======================================
+#
+# Sequence: P01308.1     from: 1   to: 110
+# HitCount: 1
+#
+# Full: No
+# Prune: Yes
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: P01308.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
