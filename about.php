@@ -14,7 +14,7 @@
     </nav>
 <h1>About the tool</h1>
     <p>This tool fetches protein sequences and analyzes conservation and motifs using PROSITE and Clustal Omega.</p>
-        <p>This should give an overview of how I implemmented everything (no exmales of code) aimed at a web developer audience
+        <p>This should give an overview of how I implemented everything (no examples of code) aimed at a web developer audience
  <footer>
       <p> © 2025 Protein Fetcher. All rights reserved. </p>
     </footer>
