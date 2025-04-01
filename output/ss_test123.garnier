@@ -1,0 +1,131 @@
+########################################
+# Program: garnier
+# Rundate: Tue  1 Apr 2025 12:47:28
+# Commandline: garnier
+#    -sequence /home/s2015320/public_html/project2/output/input_test123.fasta
+#    -outfile /home/s2015320/public_html/project2/output/ss_test123.garnier
+# Report_format: tagseq
+# Report_file: /home/s2015320/public_html/project2/output/ss_test123.garnier
+########################################
+
+#=======================================
+#
+# Sequence: Sequence1     from: 1   to: 110
+# HitCount: 22
+#
+# DCH = 0, DCS = 0
+# 
+#  Please cite:
+#  Garnier, Osguthorpe and Robson (1978) J. Mol. Biol. 120:97-120
+# 
+#
+#=======================================
+
+          .   10    .   20    .   30    .   40    .   50
+      MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFY
+helix HHHHHHHHHHHH          HHHHHH      HHHHHHH         
+sheet             EEE                          EE       
+turns                T            TTTT           TTTTTT 
+ coil                 CCCCCC          CC               C
+          .   60    .   70    .   80    .   90    .  100
+      TPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSIC
+helix      HHHHHHHH                 HHHHHHH             
+sheet              EEEEE        EEEE          EEE      E
+turns                   T                  TTT   TTTTTT 
+ coil CCCCC              CCCCCCC                        
+          .  110
+      SLYQLENYCN
+helix           
+sheet EEEE      
+turns     TTTTTT
+ coil           
+
+#---------------------------------------
+#
+#  Residue totals: H: 40   E: 22   T: 27   C: 21
+#         percent: H: 42.6 E: 23.4 T: 28.7 C: 22.3
+#
+#---------------------------------------
+#=======================================
+#
+# Sequence: Sequence2     from: 1   to: 110
+# HitCount: 22
+#
+# DCH = 0, DCS = 0
+# 
+#  Please cite:
+#  Garnier, Osguthorpe and Robson (1978) J. Mol. Biol. 120:97-120
+# 
+#
+#=======================================
+
+          .   10    .   20    .   30    .   40    .   50
+      MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFY
+helix HHHHHHHHHHHH          HHHHHH      HHHHHHH         
+sheet             EEE                          EE       
+turns                T            TTTT           TTTTTT 
+ coil                 CCCCCC          CC               C
+          .   60    .   70    .   80    .   90    .  100
+      TPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSIC
+helix      HHHHHHHH                 HHHHHHH             
+sheet              EEEEE        EEEE          EEE      E
+turns                   T                  TTT   TTTTTT 
+ coil CCCCC              CCCCCCC                        
+          .  110
+      SLYQLENYCN
+helix           
+sheet EEEE      
+turns     TTTTTT
+ coil           
+
+#---------------------------------------
+#
+#  Residue totals: H: 40   E: 22   T: 27   C: 21
+#         percent: H: 42.6 E: 23.4 T: 28.7 C: 22.3
+#
+#---------------------------------------
+#=======================================
+#
+# Sequence: Sequence3     from: 1   to: 110
+# HitCount: 23
+#
+# DCH = 0, DCS = 0
+# 
+#  Please cite:
+#  Garnier, Osguthorpe and Robson (1978) J. Mol. Biol. 120:97-120
+# 
+#
+#=======================================
+
+          .   10    .   20    .   30    .   40    .   50
+      MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFY
+helix HHHHHHHHHHHH          HHHHHH      HHHHHHH         
+sheet             EEE                          EE       
+turns                T            TTTT           TTTTTT 
+ coil                 CCCCCC          CC               C
+          .   60    .   70    .   80    .   90    .  100
+      TPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSIC
+helix      HHHHHHHH                 HHHHHHH             
+sheet              EEEEE        EEEE          EEE      E
+turns                   T                  TTT   TTTTTT 
+ coil CCCCC              CCCCCCC                        
+          .  110
+      SLYQLENYAA
+helix      HHHHH
+sheet EEEE      
+turns           
+ coil     C     
+
+#---------------------------------------
+#
+#  Residue totals: H: 45   E: 22   T: 21   C: 22
+#         percent: H: 47.9 E: 23.4 T: 22.3 C: 23.4
+#
+#---------------------------------------
+
+#---------------------------------------
+# Total_sequences: 3
+# Total_length: 330
+# Reported_sequences: 3
+# Reported_hitcount: 67
+#---------------------------------------

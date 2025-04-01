@@ -5,42 +5,44 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-ini_set('max_execution_time', 600); // 10 minutes timeout
+ini_set('max_execution_time', 600); // 10 minutes timeout, in case the user's internet is slow
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['sequence_data'])) {
     die("No sequence data provided.");
 }
 
-// --- Prepare Output Directory ---
-$output_dir = "/home/s2015320/public_html/project2/output/";
-if (!file_exists($output_dir)) {
-    mkdir($output_dir, 0755, true); // Should already exist from prior runs
+// --- Prepare Temporary Files ---
+$temp_dir = "/home/s2015320/public_html/project2/output/" . session_id() . "/";
+if (!file_exists($temp_dir)) {
+    mkdir($temp_dir, 0777, true); // Only create if it doesn’t exist
 }
-$session_id = session_id();
-$temp_aln = $output_dir . "input_" . $session_id . ".aln";
+$temp_aln = $temp_dir . "input.aln";
 $data = json_decode($_POST['sequence_data'], true);
 $sequences = $data['sequences'] ?? [];
 $fasta = "";
 foreach ($sequences as $seq) {
     $fasta .= ">{$seq['id']}\n{$seq['sequence']}\n";
 }
-file_put_contents($output_dir . "input_" . $session_id . ".fasta", $fasta);
+file_put_contents($temp_dir . "input.fasta", $fasta);
 
 // --- Run Clustal Omega ---
-$clustalo_cmd = "clustalo -i {$output_dir}input_{$session_id}.fasta -o $temp_aln --force --outfmt=clustal";
+$clustalo_cmd = "clustalo -i {$temp_dir}input.fasta -o $temp_aln --force --outfmt=clustal";
 exec($clustalo_cmd . " 2>&1", $clustal_output);
 
 // --- Run Advanced Analysis ---
 $script_path = "/home/s2015320/public_html/project2/advanced_analysis.py";
 $python_path = "/home/s2015320/public_html/project2/myenv/bin/python3";
-$command = "MPLCONFIGDIR=/tmp/matplotlib_cache SESSION_ID={$session_id} $python_path $script_path $temp_aln 2>&1";
+$command = "MPLCONFIGDIR=/tmp/matplotlib_cache $python_path $script_path $temp_aln 2>&1";
 exec($command, $output);
-$report_path = $output_dir . "report_" . $session_id . ".html";
-$report_url = "https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/output/report_" . $session_id . ".html";
-
-// --- Store Sequence Data for Back Button ---
-$_SESSION['last_sequence_data'] = $_POST['sequence_data'];
+$report_path = null;
+foreach ($output as $line) {
+    if (strpos($line, "Report generated:") !== false) {
+        $report_path = trim(str_replace("Report generated:", "", $line));
+        break;
+    }
+}
+$report_url = "https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/output/" . session_id() . "/report.html";
 ?>
 <!DOCTYPE html>
 <html>
@@ -49,6 +51,7 @@ $_SESSION['last_sequence_data'] = $_POST['sequence_data'];
     <link rel="stylesheet" href="styles_new.css">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="top-nav">
         <a href="indexx.html"><button>Home</button></a>
         <a href="about.php"><button>About</button></a>
@@ -56,12 +59,18 @@ $_SESSION['last_sequence_data'] = $_POST['sequence_data'];
         <a href="help.php"><button>Help</button></a>
         <a href="credits.php"><button>Statement of Credits</button></a>
     </nav>
+
+    <!-- Page Header -->
     <h1>Advanced Protein Analysis</h1>
-    <?php if (file_exists($report_path)): ?>
+
+    <!-- Display Results -->
+    <?php if ($report_path && file_exists($report_path)): ?>
         <iframe src="<?php echo htmlspecialchars($report_url); ?>" width="100%" height="600"></iframe>
     <?php else: ?>
         <p>Analysis failed: <pre><?php echo htmlspecialchars(implode("\n", $output)); ?></pre></p>
     <?php endif; ?>
+
+    <!-- Back Button -->
     <form action="analysis_tool.php" method="post">
         <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars($_SESSION['last_sequence_data'] ?? ''); ?>'>
         <button type="submit">Back to Sequences</button>

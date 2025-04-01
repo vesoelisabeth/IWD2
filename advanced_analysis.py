@@ -1,130 +1,149 @@
-#!/usr/bin/python3
-import os
-import subprocess
+#!/home/s2015320/public_html/project2/myenv/bin/python3
+
 import sys
+import os
 import time
-from Bio import Entrez, SeqIO, AlignIO
+import urllib.request
+from Bio import AlignIO, SeqIO, Phylo
 from Bio.PDB import PDBList
+from Bio.Blast import NCBIWWW, NCBIXML
+from Bio.Align.Applications import ClustalOmegaCommandline
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend
 import matplotlib.pyplot as plt
-from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
-from Bio import Phylo
 
-# --- Configuration ---
-Entrez.email = "vesoelisabeh@gmail.com"
-OUTPUT_DIR = "/tmp/advanced_analysis_" + os.urandom(8).hex() + "/"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# Environment variables from generate_example.py
+OUTPUT_DIR = "/home/s2015320/public_html/project2/output"
+SESSION_ID = os.environ.get("SESSION_ID", "example_g6pase_aves")
 
-# --- Secondary Structure Prediction ---
-def analyze_secondary_structure(sequence_file):
-    ss_file = os.path.join(OUTPUT_DIR, "ss.garnier")
-    try:
-        result = subprocess.run(["garnier", "-sequence", sequence_file, "-outfile", ss_file], capture_output=True, text=True, check=True)
-        print(f"Garnier output: {result.stdout}")
-        return parse_garnier(ss_file)
-    except subprocess.CalledProcessError as e:
-        return [f"Error in garnier: {e.stderr}"]
-
-def parse_garnier(garnier_file):
-    if not os.path.exists(garnier_file):
-        return ["No output from garnier"]
-    with open(garnier_file) as f:
-        return [line.strip() for line in f]
-
-# --- 3D Structure Homology ---
 def fetch_structures(sequence):
     pdbl = PDBList()
     try:
-        time.sleep(1)  # Rate limit delay
-        # Search PDB with sequence ID or protein name, link to structure
-        handle = Entrez.esearch(db="structure", term="insulin", retmax=3)
-        pdb_ids = Entrez.read(handle)["IdList"]
+        seq_str = str(sequence.seq)
+        seq_id = sequence.id
+        print(f"Searching structures for sequence ID: {seq_id}")
+        blast_handle = NCBIWWW.qblast("blastp", "pdb", seq_str, hitlist_size=3)
+        blast_record = NCBIXML.read(blast_handle)
+        print(f"BLAST alignments found: {len(blast_record.alignments)}")
         structures = []
-        for pdb_id in pdb_ids:
-            time.sleep(1)  # Delay between downloads
+        for alignment in blast_record.alignments[:3]:
+            pdb_id_full = alignment.accession.split("|")[1] if "|" in alignment.accession else alignment.accession
+            pdb_id = pdb_id_full.split("_")[0].upper()
+            print(f"Found PDB hit: {pdb_id}")
+            time.sleep(1)
+            temp_file = f"/tmp/{pdb_id}_{SESSION_ID}.pdb"
+            final_file = os.path.join(OUTPUT_DIR, f"{pdb_id}.pdb")
+            url = f"https://files.rcsb.org/download/{pdb_id}.pdb"
             try:
-                pdb_file = pdbl.retrieve_pdb_file(pdb_id, pdir=OUTPUT_DIR, file_format="pdb")
-                resolution = get_resolution(pdb_file)
-                structures.append({"id": pdb_id, "path": pdb_file, "resolution": resolution})
+                urllib.request.urlretrieve(url, temp_file)
+                os.chmod(temp_file, 0o644)  # Readable by all
+                if os.path.exists(final_file):
+                    os.remove(final_file)  # Remove old file if writable
+                os.rename(temp_file, final_file)  # Move to output
+                resolution = get_resolution(final_file)
+                print(f"Downloaded PDB {pdb_id} to {final_file}")
+                structures.append({"id": pdb_id, "path": final_file, "resolution": resolution})
             except Exception as e:
+                print(f"Failed to download {pdb_id}: {e}")
                 structures.append({"id": pdb_id, "path": "", "resolution": f"Download error: {e}"})
         return structures if structures else [{"id": "N/A", "path": "", "resolution": "No structures found"}]
     except Exception as e:
         return [{"id": "N/A", "path": "", "resolution": f"Error: {e}"}]
 
 def get_resolution(pdb_file):
-    if not os.path.exists(pdb_file):
-        return "N/A"
-    with open(pdb_file) as f:
-        for line in f:
-            if line.startswith("REMARK   2 RESOLUTION."):
-                return line.split()[-2] if line.split()[-2] != "ANGSTROMS" else "N/A"
-    return "N/A"
+    try:
+        with open(pdb_file, "r") as f:
+            for line in f:
+                if line.startswith("REMARK   2 RESOLUTION"):
+                    return line.split()[-2]  # e.g., "2.50"
+        return "Unknown"
+    except Exception as e:
+        return f"Resolution error: {e}"
 
-# --- Phylogenetic Tree Generation ---
+def run_garnier(alignment_file):
+    garnier_file = os.path.join(OUTPUT_DIR, f"ss_{SESSION_ID}.garnier")
+    try:
+        os.system(f"garnier -osequence {alignment_file} > {garnier_file}")
+        print("Garnier output:")
+        return garnier_file
+    except Exception as e:
+        print(f"Garnier failed: {e}")
+        return None
+
 def generate_phylogeny(alignment_file):
+    phylo_file = os.path.join(OUTPUT_DIR, f"phylogeny_{SESSION_ID}.png")
     try:
         alignment = AlignIO.read(alignment_file, "clustal")
-        if len(alignment) < 2:
-            return "Error: Need at least 2 sequences for phylogeny"
-        seq_set = {str(record.seq) for record in alignment}
-        if len(seq_set) < 2:
-            return "Error: All sequences are identical"
-        # Calculate distance matrix
-        calculator = DistanceCalculator('identity')
-        dm = calculator.get_distance(alignment)
-        # Build tree
-        constructor = DistanceTreeConstructor()
-        tree = constructor.nj(dm)
-        tree_file = os.path.join(OUTPUT_DIR, "phylogeny.png")
-        plt.figure(figsize=(10, 8))
+        tree = Phylo.read(os.path.join(OUTPUT_DIR, "temp.dnd"), "newick")  # Assumes Clustal generated this
+        plt.figure(figsize=(10, 5))
         Phylo.draw(tree, do_show=False)
-        plt.savefig(tree_file)
+        plt.savefig(phylo_file)
         plt.close()
-        return tree_file
+        return phylo_file
     except Exception as e:
-        return f"Error: {e}"
+        print(f"Phylogeny generation failed: {e}")
+        return None
 
-# --- Report Generation ---
-def generate_report(analysis_results):
-    html_lines = [
-        "<html><head><title>Protein Insights</title>",
-        "<style>body { font-family: Arial; } pre { white-space: pre-wrap; }</style>",
-        "</head><body>",
-        "<h1>Advanced Protein Insights</h1>",
-        "<h2>Secondary Structure</h2><pre>",
-        "\n".join(analysis_results['secondary_structure']),
-        "</pre>",
-        "<h2>3D Structures</h2><ul>",
-        "".join(f'<li>{s["id"]} (Resolution: {s["resolution"]})</li>' for s in analysis_results['structures']),
-        "</ul>",
-        "<h2>Phylogeny</h2>",
-        f'<img src="{analysis_results["phylogeny"]}" width="50%">' if os.path.exists(analysis_results["phylogeny"]) else f"No phylogeny: {analysis_results['phylogeny']}",
-        "</body></html>"
-    ]
-    html = "\n".join(html_lines)
+def generate_report(alignment_file, garnier_file, structures, phylo_file):
+    report_file = os.path.join(OUTPUT_DIR, f"report_{SESSION_ID}.html")
+    try:
+        with open(report_file, "w") as f:
+            f.write("<html><head><title>Advanced Analysis</title></head><body>")
+            f.write("<h1>Advanced Analysis Report</h1>")
+            
+            # Secondary Structure
+            f.write("<h2>Secondary Structure (Garnier)</h2>")
+            if garnier_file and os.path.exists(garnier_file):
+                with open(garnier_file, "r") as gf:
+                    f.write("<pre>" + gf.read() + "</pre>")
+            else:
+                f.write("<p>No secondary structure data available.</p>")
+            
+            # 3D Structures
+            f.write("<h2>3D Structures</h2>")
+            for struct in structures:
+                f.write(f"<p>{struct['id']} (Resolution: {struct['resolution']})</p>")
+            
+            # Phylogeny
+            f.write("<h2>Phylogeny</h2>")
+            if phylo_file and os.path.exists(phylo_file):
+                f.write(f"<img src='{os.path.basename(phylo_file)}' alt='Phylogeny Tree'>")
+            else:
+                f.write("<p>No phylogeny image available.</p>")
+            
+            f.write("</body></html>")
+        print(f"Report generated: {report_file}")
+        return report_file
+    except Exception as e:
+        print(f"Report generation failed: {e}")
+        return None
 
-    report_file = os.path.join(OUTPUT_DIR, "report.html")
-    with open(report_file, "w") as f:
-        f.write(html)
-    return report_file
-
-# --- Main Execution ---
-def main(alignment_file):
-    fasta_file = os.path.join(OUTPUT_DIR, "input.fasta")
-    AlignIO.convert(alignment_file, "clustal", fasta_file, "fasta")
-    sequence = list(SeqIO.parse(fasta_file, "fasta"))[0]
-    
-    results = {
-        "secondary_structure": analyze_secondary_structure(fasta_file),
-        "structures": fetch_structures(sequence),
-        "phylogeny": generate_phylogeny(alignment_file)
-    }
-    return generate_report(results)
-
-# --- Command-Line Entry Point ---
-if __name__ == "__main__":
+def main():
     if len(sys.argv) != 2:
-        print("Usage: python advanced_analysis.py <alignment.clustal>")
+        print("Usage: python3 advanced_analysis.py <alignment_file>")
         sys.exit(1)
-    report = main(sys.argv[1])
-    print(f"Report generated: {report}")
+    
+    alignment_file = sys.argv[1]
+    if not os.path.exists(alignment_file):
+        print(f"Alignment file {alignment_file} not found")
+        sys.exit(1)
+    
+    # Read alignment
+    try:
+        alignment = AlignIO.read(alignment_file, "clustal")
+    except Exception as e:
+        print(f"Failed to read alignment: {e}")
+        sys.exit(1)
+    
+    # Run analyses
+    garnier_file = run_garnier(alignment_file)
+    structures = fetch_structures(alignment[0])  # First sequence for simplicity
+    phylo_file = generate_phylogeny(alignment_file)
+    report_file = generate_report(alignment_file, garnier_file, structures, phylo_file)
+    
+    if not report_file:
+        print("Advanced analysis failed")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

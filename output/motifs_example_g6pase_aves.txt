@@ -1,0 +1,35 @@
+########################################
+# Program: patmatmotifs
+# Rundate: Tue  1 Apr 2025 18:25:44
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/output/input_example_g6pase_aves.fasta
+#    -outfile /home/s2015320/public_html/project2/output/motifs_example_g6pase_aves.txt
+#    -auto
+# Report_format: dbmotif
+# Report_file: /home/s2015320/public_html/project2/output/motifs_example_g6pase_aves.txt
+########################################
+
+#=======================================
+#
+# Sequence: KAJ7421106.1     from: 1   to: 358
+# HitCount: 1
+#
+# Full: No
+# Prune: Yes
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Length = 4
+Start = position 139 of sequence
+End = position 142 of sequence
+
+Motif = AMIDATION
+
+LLSAAGGKKQSRTL
+     |  |
+   139  142
+
+
+#---------------------------------------
+#---------------------------------------

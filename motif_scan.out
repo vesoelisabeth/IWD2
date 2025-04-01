@@ -1,15 +1,15 @@
 ########################################
 # Program: patmatmotifs
-# Rundate: Sun 30 Mar 2025 23:28:46
+# Rundate: Mon 31 Mar 2025 11:50:09
 # Commandline: patmatmotifs
-#    -sequence /home/s2015320/public_html/project2/temp_seq_67e9c59eb6d36.fasta
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea736173f24.fasta
 #    -full
 #    -noprune
 #    -sformat fasta
 #    -rformat simple
-#    -outfile /home/s2015320/public_html/project2/motif_scan.out
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea736174901.out
 # Report_format: simple
-# Report_file: /home/s2015320/public_html/project2/motif_scan.out
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea736174901.out
 ########################################
 
 #=======================================
@@ -79,3 +79,769 @@ Motif: INSULIN
 
 #---------------------------------------
 #---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea736181e06.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361826db.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361826db.out
+########################################
+
+#=======================================
+#
+# Sequence: NP_001035835.1     from: 1   to: 200
+# HitCount: 13
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: NP_001035835.1
+Start: 138
+End: 141
+Length: 4
+Score: 4
+Strand: .
+Motif: CAMP_PHOSPHO_SITE
+
+Feature: 2
+Name: NP_001035835.1
+Start: 102
+End: 104
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: NP_001035835.1
+Start: 82
+End: 84
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 4
+Name: NP_001035835.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 5
+Name: NP_001035835.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 6
+Name: NP_001035835.1
+Start: 74
+End: 77
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 7
+Name: NP_001035835.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 8
+Name: NP_001035835.1
+Start: 128
+End: 133
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 9
+Name: NP_001035835.1
+Start: 125
+End: 130
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 10
+Name: NP_001035835.1
+Start: 99
+End: 104
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 11
+Name: NP_001035835.1
+Start: 96
+End: 101
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 12
+Name: NP_001035835.1
+Start: 78
+End: 83
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 13
+Name: NP_001035835.1
+Start: 136
+End: 139
+Length: 4
+Score: 4
+Strand: .
+Motif: AMIDATION
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea736194db8.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea73619563e.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea73619563e.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI4069451.1     from: 1   to: 98
+# HitCount: 4
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI4069451.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI4069451.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI4069451.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI4069451.1
+Start: 83
+End: 97
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361a3fc8.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361a485b.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361a485b.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI4069450.1     from: 1   to: 92
+# HitCount: 4
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI4069450.1
+Start: 78
+End: 80
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI4069450.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI4069450.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI4069450.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361b02e8.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361b0be7.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361b0be7.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI4069449.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI4069449.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI4069449.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI4069449.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI4069449.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI4069449.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI4069449.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361be45b.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361bee29.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361bee29.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI4069448.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI4069448.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI4069448.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI4069448.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI4069448.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI4069448.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI4069448.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361cd678.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361ce0c1.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361ce0c1.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI4069447.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI4069447.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI4069447.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI4069447.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI4069447.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI4069447.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI4069447.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361d8e80.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361d97a6.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361d97a6.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI2558111.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI2558111.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI2558111.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI2558111.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI2558111.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI2558111.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI2558111.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361e3175.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361e3a19.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361e3a19.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI2558110.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI2558110.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI2558110.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI2558110.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI2558110.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI2558110.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI2558110.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+
+########################################
+# Program: patmatmotifs
+# Rundate: Mon 31 Mar 2025 11:50:09
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/temp_seq_67ea7361ee5f9.fasta
+#    -full
+#    -noprune
+#    -sformat fasta
+#    -rformat simple
+#    -outfile /home/s2015320/public_html/project2/temp_motif_67ea7361eef21.out
+# Report_format: simple
+# Report_file: /home/s2015320/public_html/project2/temp_motif_67ea7361eef21.out
+########################################
+
+#=======================================
+#
+# Sequence: KAI2558109.1     from: 1   to: 110
+# HitCount: 6
+#
+# Full: Yes
+# Prune: No
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+Feature: 1
+Name: KAI2558109.1
+Start: 54
+End: 56
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 2
+Name: KAI2558109.1
+Start: 51
+End: 53
+Length: 3
+Score: 3
+Strand: .
+Motif: PKC_PHOSPHO_SITE
+
+Feature: 3
+Name: KAI2558109.1
+Start: 54
+End: 57
+Length: 4
+Score: 4
+Strand: .
+Motif: CK2_PHOSPHO_SITE
+
+Feature: 4
+Name: KAI2558109.1
+Start: 70
+End: 75
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 5
+Name: KAI2558109.1
+Start: 69
+End: 74
+Length: 6
+Score: 6
+Strand: .
+Motif: MYRISTYL
+
+Feature: 6
+Name: KAI2558109.1
+Start: 95
+End: 109
+Length: 15
+Score: 15
+Strand: .
+Motif: INSULIN
+
+#---------------------------------------
+#---------------------------------------
+

@@ -5,19 +5,17 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$debug_log = "/tmp/analysis_debug_" . session_id() . ".log";
+$debug_log = "/tmp/analysis_debug_" . session_id() . ".log";  // Use /tmp for write access
 if (!file_exists($debug_log)) {
     touch($debug_log);
     chmod($debug_log, 0664);
 }
-file_put_contents($debug_log, "Script started at " . date('Y-m-d H:i:s') . "\n", FILE_APPEND);
-file_put_contents($debug_log, "Initial session_id: " . ($_SESSION['session_id'] ?? 'unset') . "\n", FILE_APPEND);
+file_put_contents($debug_log, "Script started\n", FILE_APPEND);
 
 // --- Session and Variable Initialization ---
 $logged_in = isset($_SESSION['session_id']);
 $results = '';
 $data = null;
-$history = [];  // Separate history variable
 
 // --- Load Sequence Data ---
 if (isset($_POST['sequence_data']) && !empty($_POST['sequence_data'])) {
@@ -47,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['session_id'] = $data_response['session_id'];
                     $logged_in = true;
                     $results = "Session started successfully! Session ID: " . $_SESSION['session_id'];
-                    file_put_contents($debug_log, "Session set: " . $_SESSION['session_id'] . "\n", FILE_APPEND);
                 } else {
                     $results = "Error: No valid session_id received. Response: " . htmlspecialchars($response);
                 }
@@ -81,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $data = json_decode($response, true);
                 if (!isset($data['error'])) {
-                    $results = "<h2>Search Results</h2>";  // Fixed $data['result'] assumption
+                    $results = "<h2>{$data['result']}</h2>";
                     foreach ($data['sequences'] as $seq) {
-                        $results .= "<div class='sequence'><strong>{$seq['id']}</strong><br>{$seq['description']}<br><p>Organism: {$seq['organism']}</p><pre>{$seq['sequence']}</pre></div>";  // Fixed syntax
+                        $results .= "<div class='sequence'><strong>{$seq['id']}</strong><br>{$seq['description']}<br><p>Organism: {$seq['organism']}</p><pre>{$seq['sequence']}</pre></div>";
                     }
                     $_SESSION['last_sequence_data'] = json_encode($data);
                 } else {
@@ -94,44 +91,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $results = "Error: Please provide protein and taxonomy.";
         }
     } elseif (isset($_POST['fetch_proteins']) && !$logged_in) {
-        $results = "Error: Please log in to fetch proteins.";
+        $results = "Error: Please log in first.";
     }
-}
+  }
 
 // --- Fetch history if logged in ---
+
 if ($logged_in) {
     $session_id = $_SESSION['session_id'];
-    $response = @file_get_contents('https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/sqlconnect.php', false, stream_context_create([
+    $response = file_get_contents('https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/sqlconnect.php', false, stream_context_create([
         'http' => ['method' => 'POST', 'header' => 'Content-Type: application/json', 'content' => json_encode(['action' => 'get_user_history', 'session_id' => $session_id])]
     ]));
-    file_put_contents($debug_log, "History fetch for $session_id: " . ($response ?: 'No response') . "\n", FILE_APPEND);
-    if ($response !== false) {
-        $history_data = json_decode($response, true);
-        if (isset($history_data['history'])) {
-            $history = $history_data['history'];
-        } else {
-            $results .= "<p>History fetch failed: " . ($history_data['error'] ?? 'Unknown error') . "</p>";
-        }
-    } else {
-        $results .= "<p>History fetch failed: Unable to connect to sqlconnect.php</p>";
+    $data = json_decode($response, true);
+    if (isset($data['history'])) {
+        $history = $data['history'];
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Protein Fetcher - Analysis Tool</title>
     <link rel="stylesheet" href="styles_new.css">
     <style>
-        .header-container { display: flex; align-items: center; justify-content: flex-start; gap: 10px; margin-bottom: 20px; }
-        .header-container button { padding: 8px 16px; font-size: 14px; }
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .header-container button {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
         .sequence { margin: 10px 0; }
-        .history { margin-top: 20px; }
+	.history { margin-top: 20px; }
         .history-item { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="top-nav">
         <a href="indexx.html"><button>Home</button></a>
         <a href="about.php"><button>About</button></a>
@@ -139,8 +139,11 @@ if ($logged_in) {
         <a href="help.php"><button>Help</button></a>
         <a href="credits.php"><button>Credits</button></a>
     </nav>
+
+    <!-- Page Header -->
     <h1>Analysis Tool</h1>
 
+    <!-- Login Section -->
     <?php if (!$logged_in): ?>
         <div id="login">
             <h2>Login</h2>
@@ -148,7 +151,7 @@ if ($logged_in) {
             <?php if (isset($_GET['logged_out'])): ?>
                 <p>Logged out successfully.</p>
             <?php endif; ?>
-            <form method="POST" action="">
+            <form method="POST">
                 <div class="input-group">
                     Name: <input name="name" type="text" placeholder="Enter your name"><br>
                 </div>
@@ -157,18 +160,20 @@ if ($logged_in) {
                 </div>
                 <button type="submit" name="start_session">Start</button>
             </form>
-            <p><?php echo $results; ?></p>  <!-- Show login result -->
         </div>
     <?php else: ?>
+        <!-- Logout Button -->
         <div id="logout">
-            <form method="POST" action="">
+            <form method="POST">
                 <button type="submit" name="logout">Log Out</button>
             </form>
         </div>
+
+        <!-- Protein Query Form -->
         <div id="query">
             <h2>Query Proteins</h2>
             <p>Insert your protein and taxonomy of interest and we will tell you more about it.</p>
-            <form method="POST" action="">
+            <form method="POST">
                 <div class="input-group">
                     Protein: <input name="protein" type="text" placeholder="e.g., insulin"><br>
                 </div>
@@ -177,10 +182,14 @@ if ($logged_in) {
                 </div>
                 <button type="submit" name="fetch_proteins">Fetch</button>
             </form>
+            <!-- Example Button -->
             <form method="GET" action="example_results.php">
                 <button type="submit">Try Example (Glucose-6-Phosphatase - Aves)</button>
             </form>
         </div>
+        </div>
+
+        <!-- Results and Analysis Options -->
         <div id="results">
             <?php echo $results; ?>
             <?php if ($data && !empty($data['sequences'])): ?>
@@ -198,6 +207,7 @@ if ($logged_in) {
                 </form>
             <?php endif; ?>
         </div>
+	<!-- History Section -->
         <?php if (!empty($history)): ?>
             <div class="history">
                 <h2>Your Previous Analyses</h2>
@@ -208,7 +218,7 @@ if ($logged_in) {
                         <p><strong>Queried:</strong> <?php echo htmlspecialchars($item['query_time']); ?></p>
                         <p><strong>Results:</strong> <?php echo $item['results'] ? htmlspecialchars($item['results']) : 'No results'; ?></p>
                     </div>
-                <?php endforeach; ?>
+	<?php endforeach; ?>
             </div>
         <?php endif; ?>
     <?php endif; ?>
