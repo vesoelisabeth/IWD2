@@ -1,0 +1,6 @@
+tmp/
+*.txt
+*.log
+*.png
+*.fasta
+*.json
