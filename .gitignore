@@ -1,0 +1,9 @@
+# Ignore tmp directory and its contents
+tmp/
+
+# Ignore specific output files
+*.txt
+*.log
+*.png
+*.fasta
+*.json
