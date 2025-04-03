@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conservation Analysis</title>
+    <link rel="stylesheet" href="styles_new.css">
+    <style>
+        pre { font-family: monospace; white-space: pre-wrap; }
+        .button-group { margin-bottom: 10px; }
+        .button-group form { display: inline; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="indexx.html"><button>Home</button></a>
+        <a href="about.php"><button>About</button></a>
+        <a href="analysis_tool.php"><button>Analysis Tool</button></a>
+        <a href="help.php"><button>Help</button></a>
+        <a href="credits.php"><button>Credits</button></a>
+    </nav>
+    <div>
+        <h1>Conservation Analysis: insulin (Unknown Taxonomy)</h1>
+        <div class="button-group">
+            <form action="/~s2015320/project2/serve_tmp.php" method="get">
+                <input type="hidden" name="file" value="%2Fhome%2Fs2015320%2Fpublic_html%2Fproject2%2Ftmp%2Falignment_2506b802e83115c3ebc1eddb4af385b5.txt">
+                <button type="submit">Download Alignment</button>
+            </form>
+            <form method="POST" action="analysis_tool.php">
+                <input type="hidden" name="sequence_data" value='{&quot;protein_name&quot;:&quot;insulin&quot;,&quot;sequences&quot;:[{&quot;id&quot;:&quot;seq1&quot;,&quot;sequence&quot;:&quot;MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTNPSG&quot;},{&quot;id&quot;:&quot;seq2&quot;,&quot;sequence&quot;:&quot;MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREA&quot;}]}'>
+                <button type="submit">Back</button>
+            </form>
+        </div>
+        <h2>Conservation Score</h2>
+        <p>0.97</p>
+                    <h2>Conservation Plot</h2>
+            <img src="/~s2015320/project2/tmp/conservation_plot_8f47f8719893ea22.png" alt="Conservation Plot" style="max-width: 100%;">
+                            <h2>Multiple Sequence Alignment Plot</h2>
+            <img src="/~s2015320/project2/tmp/msa_plot_5ef55515454a99be.png" alt="MSA Plot" style="max-width: 100%;">
+                            <h2>Multiple Sequence Alignment</h2>
+            <table border="1">
+                <tr><th>ID</th><th>Aligned Sequence</th></tr>
+                                    <tr>
+                        <td>seq1</td>
+                        <td><pre>MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTNPSG</pre></td>
+                    </tr>
+                                    <tr>
+                        <td>seq2</td>
+                        <td><pre>MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREA</pre></td>
+                    </tr>
+                            </table>
+            </div>
+</body>
+</html>

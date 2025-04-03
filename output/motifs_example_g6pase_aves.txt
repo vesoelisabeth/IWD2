@@ -1,6 +1,6 @@
 ########################################
 # Program: patmatmotifs
-# Rundate: Tue  1 Apr 2025 18:25:44
+# Rundate: Thu  3 Apr 2025 23:51:40
 # Commandline: patmatmotifs
 #    -sequence /home/s2015320/public_html/project2/output/input_example_g6pase_aves.fasta
 #    -outfile /home/s2015320/public_html/project2/output/motifs_example_g6pase_aves.txt

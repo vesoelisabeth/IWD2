@@ -1,16 +1,11 @@
 <?php
 session_start();
 ini_set('display_errors', 1);
-error_reporti
-```ng(E_ALL);
+error_reporting(E_ALL);
 
 $job_id = "example_g6pase_aves";
 $base_url = "https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/output/";
-$json_path = "/home/s2015320/public_html/project2/output/conservation_{$job_id}.json";
-$json_content = file_get_contents($json_path);
-// Strip "Content-type: application/json" prefix if present
-$json_content = preg_replace('/^Content-type: application\/json\s*/', '', $json_content);
-$json_data = json_decode($json_content, true);
+$json_data = json_decode(file_get_contents("/home/s2015320/public_html/project2/output/conservation_{$job_id}.json"), true);
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,8 +25,8 @@ $json_data = json_decode($json_content, true);
     <h1>Example Results: Glucose-6-Phosphatase (Aves)</h1>
     <h2>Conservation Analysis</h2>
     <p>Conservation Score: <?php echo htmlspecialchars($json_data['conservation_score'] ?? 'N/A'); ?></p>
-    <img src="<?php echo $base_url . "conservation_plot_{$job_id}.png"; ?>" alt="Conservation Plot">
-    <img src="<?php echo $base_url . "msa_plot_{$job_id}.png"; ?>" alt="MSA Plot">
+    <img src="<?php echo $base_url . htmlspecialchars($json_data['plot_url'] ?? ''); ?>" alt="Conservation Plot">
+    <img src="<?php echo $base_url . htmlspecialchars($json_data['msa_plot_url'] ?? ''); ?>" alt="MSA Plot">
     <h2>Multiple Sequence Alignment</h2>
     <iframe src="<?php echo $base_url . "msa_{$job_id}.aln"; ?>" width="100%" height="400"></iframe>
     <h2>Motif Scan (PatMatMotif)</h2>

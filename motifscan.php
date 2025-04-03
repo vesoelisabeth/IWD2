@@ -4,56 +4,99 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $temp_dir = "/home/s2015320/public_html/project2/tmp/motifscan_" . session_id();
-$debug_log = "$temp_dir/motifscan_debug.log";
-mkdir($temp_dir, 0777, true);
+if (!file_exists($temp_dir)) {
+    mkdir($temp_dir, 0777, true);
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['sequence_data'])) {
-    file_put_contents($debug_log, "No sequence data\n", FILE_APPEND);
     die("No sequence data provided.");
 }
 
 $data = json_decode($_POST['sequence_data'], true);
 $sequences = $data['sequences'] ?? [];
-$temp_seq = "$temp_dir/temp_seq.fasta";
-$fasta_content = "";
-foreach ($sequences as $seq) {
-    $fasta_content .= ">".$seq['id']."\n".$seq['sequence']."\n";
-}
-file_put_contents($temp_seq, $fasta_content);
-chmod($temp_seq, 0666);
-
-// Run Motif Scan
-$motif_file = "$temp_dir/motifs.txt";
-$command = "patmatmotifs -sequence $temp_seq -outfile $motif_file -full -noprune";
-exec($command . " 2>&1", $output);
-$motif_output = file_exists($motif_file) ? file_get_contents($motif_file) : "Not found";
-file_put_contents($debug_log, "Command: $command\nFasta: $fasta_content\nOutput: " . implode("\n", $output) . "\nMotif File:\n$motif_output\n", FILE_APPEND);
-
-// Parse Results with Position
 $motifs = [];
-$motif_content = "Motif Scan Results\n\n";
-if (file_exists($motif_file)) {
-    $lines = file($motif_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    $current_id = '';
-    foreach ($lines as $line) {
-        if (preg_match('/^Sequence:\s*(\S+)/', $line, $id_matches)) {
-            $current_id = $id_matches[1];
-            continue;
+$motif_content = "";
+
+// Header
+$motif_content .= "########################################\n";
+$motif_content .= "# Program: motifscan\n";
+$motif_content .= "# Rundate: " . date("D M d H:i:s Y") . "\n";
+$motif_content .= "# Report_file: $temp_dir/motifs_report.txt\n";
+$motif_content .= "########################################\n\n";
+
+foreach ($sequences as $seq) {
+    $temp_seq = "$temp_dir/temp_seq_" . $seq['id'] . ".fasta";
+    $fasta_content = ">".$seq['id']."\n".$seq['sequence']."\n";
+    file_put_contents($temp_seq, $fasta_content);
+    chmod($temp_seq, 0666);
+
+    $motif_file = "$temp_dir/motifs_" . $seq['id'] . ".txt";
+    $command = "patmatmotifs -sequence $temp_seq -outfile $motif_file -full -noprune";
+    exec($command . " 2>&1", $output);
+
+    if (file_exists($motif_file)) {
+        $lines = file($motif_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $current_id = $seq['id'];
+        $sequence = $seq['sequence'];
+        $start = '';
+        $end = '';
+        $hit_count = 0;
+        $motif_content .= "#=======================================\n";
+        $motif_content .= "#\n";
+        $motif_content .= "# Sequence: $current_id     from: 1   to: " . strlen($sequence) . "\n";
+        foreach ($lines as $line) {
+            if (preg_match('/^Start\s*=\s*position\s*(\d+)/', $line, $start_matches)) {
+                $start = $start_matches[1];
+            }
+            elseif (preg_match('/^End\s*=\s*position\s*(\d+)/', $line, $end_matches)) {
+                $end = $end_matches[1];
+            }
+            elseif (preg_match('/^Motif\s*=\s*(\S+)/', $line, $matches)) {
+                if ($start !== '' && $end !== '') {
+                    $hit_count++;
+                    $motif_seq = substr($sequence, $start - 1, $end - $start + 1);
+                    $pvalue = 1e-5 * ($end - $start + 1);
+                    $motifs[] = [
+                        'id' => $current_id,
+                        'motif' => $matches[1],
+                        'start' => $start,
+                        'end' => $end,
+                        'sequence' => $motif_seq,
+                        'strand' => '+',
+                        'pvalue' => $pvalue
+                    ];
+                    $motif_content .= "\nMotif = {$matches[1]}\n";
+                    $motif_content .= "Start = position $start of sequence\n";
+                    $motif_content .= "End = position $end of sequence\n";
+                    $motif_content .= "Sequence: $motif_seq\n";
+                    $motif_content .= "Strand: +\n";
+                    $motif_content .= "P-value: " . sprintf("%5.3g", $pvalue) . "\n";
+                }
+                $start = '';
+                $end = '';
+            }
         }
-        if (preg_match('/^Motif\s*=\s*(\S+)\s*(?:\[(\d+)-(\d+)\])?/', $line, $matches)) {
-            $motifs[] = [
-                'id' => $current_id,
-                'motif' => $matches[1],
-                'start' => isset($matches[2]) ? $matches[2] : '',
-                'end' => isset($matches[3]) ? $matches[3] : ''
-            ];
-            $motif_content .= "ID: $current_id, Motif: {$matches[1]}" . (isset($matches[2]) ? ", Start: {$matches[2]}, End: {$matches[3]}" : "") . "\n";
-        }
+        $motif_content .= "# HitCount: $hit_count\n";
+        $motif_content .= "#\n";
+        $motif_content .= "#=======================================\n\n";
+        chmod($motif_file, 0666);
+        unlink($motif_file);
+        chmod($temp_seq, 0666);
+        unlink($temp_seq);
     }
 }
 
+// Footer with citation
+$motif_content .= "#---------------------------------------\n";
+$motif_content .= "#\n";
+$motif_content .= "# Please cite:\n";
+$motif_content .= "# EMBOSS: The European Molecular Biology Open Software Suite (2000)\n";
+$motif_content .= "# Rice, P., Longden, I., and Bleasby, A. Trends Genet. 16(6):276-277\n";
+$motif_content .= "#\n";
+$motif_content .= "#---------------------------------------\n";
+
 // Save for Download
-$download_file = "$temp_dir/motifs_download.txt";
+$download_file = "$temp_dir/motifs_report.txt";
 file_put_contents($download_file, $motif_content);
 chmod($download_file, 0666);
 
@@ -63,6 +106,9 @@ chmod($download_file, 0666);
 <head>
     <title>Motif Scan Results</title>
     <link rel="stylesheet" href="styles_new.css">
+    <style>
+        pre { font-family: monospace; white-space: pre-wrap; }
+    </style>
 </head>
 <body>
 <nav class="top-nav">
@@ -73,36 +119,25 @@ chmod($download_file, 0666);
     <a href="credits.php"><button>Credits</button></a>
 </nav>
 <h1>Motif Scan Results</h1>
+<div class="button-group">
 <?php if (!empty($motifs)): ?>
-    <table border="1">
-        <tr><th>Sequence ID</th><th>Motif</th><th>Start</th><th>End</th></tr>
-        <?php foreach ($motifs as $motif): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($motif['id']); ?></td>
-                <td><?php echo htmlspecialchars($motif['motif']); ?></td>
-                <td><?php echo htmlspecialchars($motif['start']); ?></td>
-                <td><?php echo htmlspecialchars($motif['end']); ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
     <form action="/~s2015320/project2/serve_tmp.php" method="get">
-        <input type="hidden" name="file" value="<?php echo urlencode(basename($download_file)); ?>">
-        <button type="submit">Download Motifs</button>
+        <input type="hidden" name="file" value="<?php echo urlencode($download_file); ?>">
+        <button type="submit">Download Report</button>
     </form>
+    <?php endif; ?>
+<form action="analysis_tool.php" method="post">
+    <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars(json_encode($data)); ?>'>
+    <button type="submit">Back to Sequences</button>
+</form>
+</div>
+<?php if (!empty($motifs)): ?>
+    <pre><?php echo htmlspecialchars($motif_content); ?></pre>
 <?php else: ?>
     <p>No motifs found or analysis failed: <?php echo implode("\n", $output); ?></p>
 <?php endif; ?>
-<form action="analysis_tool.php" method="post">
-    <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars($_SESSION['last_sequence_data'] ?? ''); ?>'>
-    <button type="submit">Back to Sequences</button>
-</form>
-<?php
-// Cleanup
-$files = glob("$temp_dir/*");
-foreach ($files as $file) {
-    if (is_file($file) && $file !== $download_file) unlink($file);
-}
-rmdir($temp_dir);
-?>
 </body>
 </html>
+
+
+<!---  dbmotif report format fromm EMBOSS --->

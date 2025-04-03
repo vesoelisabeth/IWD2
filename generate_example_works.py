@@ -70,22 +70,6 @@ with open(json_input_file, "r") as input_file:
 if result.returncode != 0:
     print(f"Conservation analysis failed: {result.stderr}")
     exit(1)
-# Move and rename plots to match JOB_ID
-tmp_dir = "/home/s2015320/public_html/project2/tmp/"
-for f in os.listdir(tmp_dir):
-    if f.startswith(f"conservation_plot_{JOB_ID}"):
-        os.rename(f"{tmp_dir}{f}", f"{OUTPUT_DIR}conservation_plot_{JOB_ID}.png")
-    elif f.startswith(f"msa_plot_{JOB_ID}"):
-        os.rename(f"{tmp_dir}{f}", f"{OUTPUT_DIR}msa_plot_{JOB_ID}.png")
-# Update JSON with correct plot names
-json_content = file_get_contents(json_file)
-json_content = preg_replace('/^Content-type: application\/json\s*/', '', json_content)
-json_data = json_decode(json_content, true)
-if json_data:
-    json_data['plot_url'] = f"conservation_plot_{JOB_ID}.png"
-    json_data['msa_plot_url'] = f"msa_plot_{JOB_ID}.png"
-    with open(json_file, "w") as f:
-        json.dump(json_data, f)
 print(f"Conservation JSON saved: {json_file}")
 
 # Advanced Analysis with advanced_analysis.py

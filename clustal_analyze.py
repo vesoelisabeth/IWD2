@@ -23,13 +23,13 @@ AA_COLORS = {
     'T': '#CCFFCC', 'V': '#99FF99', 'W': '#CCCCFF', 'Y': '#FFFFCC',
     '-': '#FFFFFF'
 }
+
 try:
     input_data = json.load(sys.stdin)
 except json.JSONDecodeError as e:
     print("Content-type: application/json\n")
     print(json.dumps({"error": "Invalid JSON input: " + str(e)}))
     sys.exit(1)
-
 
 sequences = input_data.get('sequences', [])
 
@@ -38,17 +38,10 @@ fasta_records = [
     for seq in sequences
 ]
 
-
 temp_fasta = f"{tmp_dir}/input_" + os.urandom(8).hex() + ".fasta"
 temp_aln = f"{tmp_dir}/output_" + os.urandom(8).hex() + ".aln"
 output_plot = f"{tmp_dir}/conservation_plot_" + os.urandom(8).hex() + ".png"
 msa_plot = f"{tmp_dir}/msa_plot_" + os.urandom(8).hex() + ".png"
-
-#temp_fasta = "/tmp/input_" + os.urandom(8).hex() + ".fasta"
-#temp_aln = "/tmp/output_" + os.urandom(8).hex() + ".aln"
-#output_plot = "/tmp/conservation_plot_" + os.urandom(8).hex() + ".png"
-#msa_plot = "/tmp/msa_plot_" + os.urandom(8).hex() + ".png"
-
 
 with open(temp_fasta, "w") as f:
     SeqIO.write(fasta_records, f, "fasta")
@@ -58,8 +51,8 @@ if len(fasta_records) < 2:
     print(json.dumps({
         "result": "Single sequence",
         "conservation_score": 1.0,
-        "plot_url": output_plot,
-        "msa_plot_url": msa_plot,
+        "plot_url": os.path.basename(output_plot),
+        "msa_plot_url": os.path.basename(msa_plot),
         "alignment": [{"id": rec.id, "aligned_sequence": str(rec.seq)} for rec in fasta_records]
     }))
     os.remove(temp_fasta)
@@ -71,10 +64,6 @@ clustalo_cmd = [
     "-o", temp_aln,
     "--force",
     "--outfmt", "clustal"
-   # "--auto",
-   #"--seqtype", "Protein",
-   # "--full",  # Full alignment, not quick
-   # "--gapopen", "10"
 ]
 result = subprocess.run(clustalo_cmd, capture_output=True, text=True)
 if result.returncode != 0:
@@ -99,8 +88,9 @@ for i in range(length):
     unique_chars, counts = np.unique(list(column), return_counts=True)
     probs = counts / nums_seqs
     ent = entropy(probs, base=2)
+
     entropy_scores.append(ent)
-    if len(unique_chars) == 1 and '-' not in unique_chars:
+    if len(unique_chars) == 1 and '-' not in unique_chars:  # Fixed typo: LENGTH -> len
         conservation.append(1)
     elif '-' in unique_chars:
         conservation.append(0)
@@ -148,7 +138,7 @@ print("Content-type: application/json\n")
 print(json.dumps({
     "result": "Alignment completed",
     "conservation_score": round(score, 2),
-    "plot_url": output_plot,
-    "msa_plot_url": msa_plot,
+    "plot_url": os.path.basename(output_plot),
+    "msa_plot_url": os.path.basename(msa_plot),
     "alignment": alignment_data
 }))

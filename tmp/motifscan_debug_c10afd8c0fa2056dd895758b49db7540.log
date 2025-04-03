@@ -1,5 +1,0 @@
-Command: patmatmotifs -sequence /home/s2015320/public_html/project2/tmp/motifscan_c10afd8c0fa2056dd895758b49db7540/temp_seq.fasta -outfile /motifs.txt
-Output: Scan a protein sequence with motifs from the PROSITE database
-Warning: Failed to open output file '/motifs.txt' error:13 'Permission denied'
-Error: Unable to open report file '/motifs.txt'
-Died: patmatmotifs terminated: Bad value for '-outfile' and no prompt

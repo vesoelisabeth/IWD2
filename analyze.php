@@ -40,8 +40,8 @@ if ($data === null) {
 }
 
 $conservation_score = $data['conservation_score'] ?? 'N/A';
-$plot_url = $data['plot_url'] ?? '';
-$msa_plot_url = $data['msa_plot_url'] ?? '';
+$plot_url = basename($data['plot_url'] ?? ''); // Use basename
+$msa_plot_url = basename($data['msa_plot_url'] ?? ''); // Use basename
 $alignment = $data['alignment'] ?? [];
 
 $aln_file = "$tmp_dir/alignment_" . session_id() . ".txt";
@@ -52,12 +52,19 @@ foreach ($alignment as $seq) {
 file_put_contents($aln_file, $aln_content);
 chmod($aln_file, 0666);
 
+// --- Store Sequence Data for Back Button ---
+$_SESSION['last_sequence_data'] = $_POST['sequence_data'];
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Conservation Analysis</title>
     <link rel="stylesheet" href="styles_new.css">
+    <style>
+        pre { font-family: monospace; white-space: pre-wrap; }
+        .button-group { margin-bottom: 10px; }
+        .button-group form { display: inline; margin-right: 10px; }
+    </style>
 </head>
 <body>
     <nav class="top-nav">
@@ -69,15 +76,31 @@ chmod($aln_file, 0666);
     </nav>
     <div>
         <h1>Conservation Analysis: <?php echo htmlspecialchars("$protein_name ($taxonomy)"); ?></h1>
+        <div class="button-group">
+            <form action="/~s2015320/project2/serve_tmp.php" method="get">
+                <input type="hidden" name="file" value="<?php echo urlencode($aln_file); ?>">
+                <button type="submit">Download Alignment</button>
+            </form>
+            <form method="POST" action="analysis_tool.php">
+                <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars($_SESSION['last_sequence_data'] ?? ''); ?>'>
+                <button type="submit">Back</button>
+            </form>
+        </div>
         <h2>Conservation Score</h2>
         <p><?php echo htmlspecialchars($conservation_score); ?></p>
-        <?php if ($plot_url): ?>
+        <?php if ($plot_url && file_exists("$tmp_dir/$plot_url")): ?>
             <h2>Conservation Plot</h2>
-            <img src="/~s2015320/project2/serve_tmp.php?file=<?php echo urlencode(basename($plot_url)); ?>" alt="Conservation Plot">
+            <img src="/~s2015320/project2/tmp/<?php echo htmlspecialchars($plot_url); ?>" alt="Conservation Plot" style="max-width: 100%;">
+        <?php else: ?>
+            <h2>Conservation Plot</h2>
+            <p>Not generated: <?php echo htmlspecialchars(file_get_contents($debug_log)); ?></p>
         <?php endif; ?>
-        <?php if ($msa_plot_url && !empty($alignment)): ?>
+        <?php if ($msa_plot_url && file_exists("$tmp_dir/$msa_plot_url") && !empty($alignment)): ?>
             <h2>Multiple Sequence Alignment Plot</h2>
-            <img src="/~s2015320/project2/serve_tmp.php?file=<?php echo urlencode(basename($msa_plot_url)); ?>" alt="MSA Plot">
+            <img src="/~s2015320/project2/tmp/<?php echo htmlspecialchars($msa_plot_url); ?>" alt="MSA Plot" style="max-width: 100%;">
+        <?php else: ?>
+            <h2>Multiple Sequence Alignment Plot</h2>
+            <p>Not generated: <?php echo htmlspecialchars(file_get_contents($debug_log)); ?></p>
         <?php endif; ?>
         <?php if (!empty($alignment)): ?>
             <h2>Multiple Sequence Alignment</h2>
@@ -91,14 +114,6 @@ chmod($aln_file, 0666);
                 <?php endforeach; ?>
             </table>
         <?php endif; ?>
-        <form action="/~s2015320/project2/serve_tmp.php" method="get">
-            <input type="hidden" name="file" value="<?php echo urlencode(basename($aln_file)); ?>">
-            <button type="submit">Download Alignment</button>
-        </form>
-        <form method="POST" action="analysis_tool.php">
-            <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars($_SESSION['last_sequence_data'] ?? ''); ?>'>
-            <button type="submit">Back</button>
-        </form>
     </div>
 </body>
 </html>
