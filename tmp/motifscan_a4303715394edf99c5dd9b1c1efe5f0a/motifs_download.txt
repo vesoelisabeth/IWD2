@@ -1,0 +1,3 @@
+Motif Scan Results
+
+ID: , Motif: PKC_PHOSPHO_SITE

@@ -1,0 +1,2 @@
+Command: patmatmotifs -sequence /home/s2015320/public_html/project2/tmp/motifscan_28af2e0f45116469033cccf7cfdfd9ee/temp_seq.fasta -outfile /home/s2015320/public_html/project2/tmp/motifscan_28af2e0f45116469033cccf7cfdfd9ee/motifs.txt
+Output: Scan a protein sequence with motifs from the PROSITE database

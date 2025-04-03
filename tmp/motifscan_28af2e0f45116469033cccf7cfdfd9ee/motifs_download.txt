@@ -1,0 +1,8 @@
+Motif Scan Results
+
+ID: , Motif: PKC_PHOSPHO_SITE
+ID: , Motif: PKC_PHOSPHO_SITE
+ID: , Motif: CK2_PHOSPHO_SITE
+ID: , Motif: MYRISTYL
+ID: , Motif: MYRISTYL
+ID: , Motif: INSULIN

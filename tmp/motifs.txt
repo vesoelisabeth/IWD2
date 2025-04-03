@@ -1,0 +1,24 @@
+########################################
+# Program: patmatmotifs
+# Rundate: Thu  3 Apr 2025 00:12:12
+# Commandline: patmatmotifs
+#    -sequence /home/s2015320/public_html/project2/tmp/test_seq.fasta
+#    -outfile /home/s2015320/public_html/project2/tmp/motifs.txt
+# Report_format: dbmotif
+# Report_file: /home/s2015320/public_html/project2/tmp/motifs.txt
+########################################
+
+#=======================================
+#
+# Sequence: seq1     from: 1   to: 58
+# HitCount: 0
+#
+# Full: No
+# Prune: Yes
+# Data_file: /usr/share/EMBOSS/data/PROSITE/prosite.lines
+#
+#=======================================
+
+
+#---------------------------------------
+#---------------------------------------
