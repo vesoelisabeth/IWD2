@@ -1,14 +1,14 @@
 <?php
 session_start();
 ini_set('display_errors', 1);
-error_reporti
-```ng(E_ALL);
+error_reporting(E_ALL);
 
 $job_id = "example_g6pase_aves";
 $base_url = "https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/output/";
 $json_path = "/home/s2015320/public_html/project2/output/conservation_{$job_id}.json";
 $json_content = file_get_contents($json_path);
-// Strip "Content-type: application/json" prefix if present
+
+
 $json_content = preg_replace('/^Content-type: application\/json\s*/', '', $json_content);
 $json_data = json_decode($json_content, true);
 ?>

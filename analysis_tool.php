@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Step 3: Fetch user history if logged in
+// https://stackoverflow.com/questions/2823913/how-do-i-create-a-user-history 
 if ($logged_in) {
     $session_id = $_SESSION['session_id'];
     $response = @file_get_contents('https://bioinfmsc8.bio.ed.ac.uk/~s2015320/project2/sqlconnect.php', false, stream_context_create([

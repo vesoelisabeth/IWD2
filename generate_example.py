@@ -122,3 +122,6 @@ for file in expected_files:
         print(f"Missing: {full_path}")
 
 print(f"Example dataset generated for job_id: {JOB_ID}")
+
+#https://emboss.bioinformatics.nl/cgi-bin/emboss/help/patmatmotifs
+#EMBOSS and Clustalo

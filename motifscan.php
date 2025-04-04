@@ -140,4 +140,5 @@ chmod($download_file, 0666);
 </html>
 
 
-<!---  dbmotif report format fromm EMBOSS --->
+<!---  dbmotif report format from EMBOSS --->
+<!--- https://biopython.org/docs/latest/Tutorial/chapter_motifs.html --->
