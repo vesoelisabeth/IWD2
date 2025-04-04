@@ -103,6 +103,7 @@
     <ul>
         <li>Handles errors (API failures, tool crashes, typos) with PHP error reporting for reliability.</li>
         <li>Balances performance and maintainability, with scalability for future expansions.</li>
+        <li>Future versions will include cookie request due to the storage of the users' data.</li>
     </ul>
 </body>
 </html>
