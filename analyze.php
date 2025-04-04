@@ -83,7 +83,7 @@ $_SESSION['last_sequence_data'] = $_POST['sequence_data'];
             </form>
             <form method="POST" action="analysis_tool.php">
                 <input type="hidden" name="sequence_data" value='<?php echo htmlspecialchars($_SESSION['last_sequence_data'] ?? ''); ?>'>
-                <button type="submit">Back</button>
+                <button type="submit">Back to Sequences</button>
             </form>
         </div>
         <h2>Conservation Score</h2>
