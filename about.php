@@ -57,6 +57,8 @@
 
     <h2>Overview</h2>
     <p>The Protein Fetcher Tool is a web-based bioinformatics demo platform designed to simplify protein sequence retrieval and analysis for researchers and enthusiasts. Hosted on a university server, it combines a PHP-driven frontend with a Python-powered backend for a smooth user experience.</p>
+    <p>To access the code and for further clarifications, visit <a href="https://github.com/B270917-2024/IWD2">My GitHub repository</a>
+
 
     <h2>User Interface</h2>
     <ul>

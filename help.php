@@ -58,7 +58,8 @@
             border-top: 1px solid #ecf0f1; 
             width: 100%; 
         }
-    </style>
+<!--- Removed the footer due to formatting issues -->  
+  </style>
 </head>
 <body>
     <nav class="top-nav">
@@ -72,6 +73,8 @@
 
     <h2>Overview</h2>
     <p>The Protein Fetcher Tool assists biologists by analyzing protein sequences from the NCBI database, providing insights into conservation, motifs, phylogeny, and structure to support research discoveries.</p>
+    <p>For help, contact [s2015320@ed.ac.uk]. Log in, enter protein and taxonomy, select options, and Enjoy the tool!</p>
+    <p>To access the code and for further clarifications, visit <a href="https://github.com/B270917-2024/IWD2">My GitHub repository</a>
 
     <h2>Sequence Retrieval</h2>
     <p>The tool employs BLAST to fetch sequences by name and taxonomy, revealing protein roles across species while supporting studies of evolutionary diversity and functional variations in metabolism or disease.</p>
@@ -91,8 +94,5 @@
     <h2>Applications</h2>
     <p>It explores evolution, function, and structure for regulation or disease research, guiding experiments targeting conserved regions or orthologs.</p>
 
-    <footer>
-        <p>For help, contact [s2015320@ed.ac.uk]. Log in, enter protein and taxonomy, select options, and Enjoy the tool!</p>
-    </footer>
-</body>
+ </body>
 </html>
